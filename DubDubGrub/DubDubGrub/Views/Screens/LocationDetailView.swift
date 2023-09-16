@@ -34,11 +34,7 @@ struct LocationDetailView: View {
             }
             .padding(.horizontal)
             
-            Text("This is a test description. This is a test description. This is a test description. This is a test description. This is a test description.")
-                .lineLimit(3)
-                .minimumScaleFactor(0.75)
-                .frame(height: 70)
-                .padding(.horizontal)
+            DiscriptionView()
             
             ZStack {
                 Capsule()
@@ -127,8 +123,21 @@ struct FirstNameAvatarView: View {
         }
     }
 }
+
+struct DiscriptionView: View {
+    var body: some View {
+        Text("This is a test description. This is a test description. This is a test description. This is a test description. This is a test description.")
+            .lineLimit(3)
+            .minimumScaleFactor(0.75)
+            .frame(height: 70)
+            .padding(.horizontal)
+    }
+}
+
+
 struct LocationDetailView_Previews: PreviewProvider {
     static var previews: some View {
         LocationDetailView()
     }
 }
+
