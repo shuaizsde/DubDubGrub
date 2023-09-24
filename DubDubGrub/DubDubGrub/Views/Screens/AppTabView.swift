@@ -28,6 +28,7 @@ struct AppTabView: View {
             }
         }
         .accentColor(.brandPrimary)
+        .onAppear{CloudKitManager.shared.getUserRecord()} // will only call once
     }
 }
 

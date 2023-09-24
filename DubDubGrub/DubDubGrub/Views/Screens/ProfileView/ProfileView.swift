@@ -2,7 +2,7 @@
 //  ProfileView.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/19/21.
+//  Created by Simon Zhang on 5/19/21.
 //
 
 import SwiftUI
@@ -77,7 +77,6 @@ struct ProfileView: View {
     }
 
 }
-
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
