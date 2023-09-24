@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct ProfileView: View {
     
@@ -15,7 +16,7 @@ struct ProfileView: View {
     @State private var bio          = ""
     @State private var avatar       = PlaceholderImage.avatar
     @State private var isShowingPhotoPicker = false
-    
+    @State private var alertItem: AlertItem?
     var body: some View {
         VStack {
             ZStack {
@@ -58,15 +59,81 @@ struct ProfileView: View {
             Spacer()
             
             Button {
-                
+                createProfile()
             } label: {
                 DDGButton(title: "Create Profile")
-            }
+            }.padding(.bottom)
         }
         .navigationTitle("Profile")
+        .toolbar {
+            Button {
+                dismissKeyboard()
+            } label: {
+                Image(systemName: "keyboard.chevron.compact.down")
+            }
+        }
+        .alert(item: $alertItem, content: { alertItem in
+            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
+        })
         .sheet(isPresented: $isShowingPhotoPicker) {
             PhotoPicker(image: $avatar)
         }
+    }
+    
+    func createProfile() {
+        
+        guard isValidProfile() else {
+            alertItem = AlertContext.invalidProfile
+            return
+        }
+        // Create our CKRecord from profile view
+        let profileRecord = CKRecord(recordType: RecordType.profile)
+        profileRecord[DDGProfile.kFirstName] = firstName
+        profileRecord[DDGProfile.kLastName] = lastName
+        profileRecord[DDGProfile.kCompanyName] = companyName
+        profileRecord[DDGProfile.kBio] = bio
+        profileRecord[DDGProfile.kAvatar] = avatar.convertToCKAsset()
+        
+        // get UserRecordID from the Container
+        CKContainer.default().fetchUserRecordID { recordID, error in
+            guard let recordID = recordID, error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            // Get UserRecord from public database
+            CKContainer.default().publicCloudDatabase.fetch(withRecordID: recordID) { userRecord, error in
+                guard let userRecord = userRecord, error == nil else {
+                    print(error!.localizedDescription)
+                    return
+                }
+                // Create reference on UserRecord to DDGProfile we created
+                userRecord["userProfile"] = CKRecord.Reference(recordID: profileRecord.recordID, action: .none)
+                
+                // Create a CKOpearation to save User and Profile Records
+                let operation = CKModifyRecordsOperation(recordsToSave: [userRecord,profileRecord])
+                operation.modifyRecordsCompletionBlock = {savedRecords, _, error in
+                    guard let savedRecords = savedRecords, error == nil else {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    print(savedRecords)
+                }
+                // Run the operation
+                CKContainer.default().publicCloudDatabase.add(operation)
+            }
+        }
+        
+    }
+    
+    func isValidProfile() -> Bool {
+        guard !firstName.isEmpty,
+              !lastName.isEmpty,
+              !bio.isEmpty,
+              !companyName.isEmpty,
+              avatar != PlaceholderImage.avatar,
+              bio.count < 100 else {return false}
+        return true
     }
 }
 
