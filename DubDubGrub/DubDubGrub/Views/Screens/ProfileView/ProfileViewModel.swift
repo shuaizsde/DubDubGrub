@@ -18,6 +18,8 @@ final class ProfileViewModel: ObservableObject {
     @Published var isShowingPhotoPicker = false
     @Published var alertItem: AlertItem?
     
+    @Published var isLoading = false
+    
     func isValidProfile() -> Bool {
         guard !firstName.isEmpty,
               !lastName.isEmpty,
@@ -37,18 +39,23 @@ final class ProfileViewModel: ObservableObject {
         let profileRecord = createProfileRecord()
         // get UserRecordID from the Container
         guard let userRecord = CloudKitManager.shared.userRecord else {
+            alertItem = AlertContext.noUserRecord
             return
         }
         // Create reference on UserRecord to DDGProfile we created
         userRecord["userProfile"] = CKRecord.Reference(recordID: profileRecord.recordID, action: .none)
+        showLoadingView()
         CloudKitManager.shared.batchSave(records: [userRecord, profileRecord]) { result in
-            switch result {
-            case .success(_):
-                // show alert
-                break
-            case .failure(_):
-                // show alert
-                break
+            DispatchQueue.main.async { [self] in
+                hideLoadingView()
+                switch result {
+                case .success(_):
+                    alertItem = AlertContext.createProfileSuccess
+                    break
+                case .failure(_):
+                    alertItem = AlertContext.createProfileFailure
+                    break
+                }
             }
         }
         
@@ -56,14 +63,17 @@ final class ProfileViewModel: ObservableObject {
   
     func getProfile() {
         guard let userRecord = CloudKitManager.shared.userRecord else {
+            alertItem = AlertContext.noUserRecord
             return
         }
         guard let profileReference = userRecord["userProfile"] as? CKRecord.Reference else {
             return
         }
         let profileRecordID = profileReference.recordID
+        showLoadingView()
         CloudKitManager.shared.fetchRecord(with: profileRecordID) { result in
             DispatchQueue.main.async { [self] in
+                hideLoadingView()
                 switch result {
                 case .success(let record):
                     let profile     = DDGProfile(record: record)
@@ -73,6 +83,7 @@ final class ProfileViewModel: ObservableObject {
                     companyName     = profile.companyName
                     avatar          = profile.createAvatarImage()
                 case .failure(_):
+                    alertItem = AlertContext.unableToGetProfile
                     break
                 }
             }
@@ -88,4 +99,8 @@ final class ProfileViewModel: ObservableObject {
         profileRecord[DDGProfile.kAvatar] = avatar.convertToCKAsset()
         return profileRecord
     }
+    
+    private func showLoadingView() { isLoading = true}
+    private func hideLoadingView() { isLoading = false}
+    
 }

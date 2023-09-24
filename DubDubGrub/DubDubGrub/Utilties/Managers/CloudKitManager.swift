@@ -51,6 +51,7 @@ final class CloudKitManager {
         }
     }
     
+    //MARK: Save a bunch of records changes into database
     func batchSave(records: [CKRecord], completed: @escaping (Result<[CKRecord], Error>) -> Void) {
         // Create a CKOpearation to save User and Profile Records
         let operation = CKModifyRecordsOperation(recordsToSave: records)
@@ -65,8 +66,8 @@ final class CloudKitManager {
         CKContainer.default().publicCloudDatabase.add(operation)
     }
     
+    //MARK: Fetch a record by id
     func fetchRecord(with id: CKRecord.ID, completed: @escaping (Result<CKRecord, Error>) -> Void) {
-        
         CKContainer.default().publicCloudDatabase.fetch(withRecordID: id) {record, error in
             guard let record = record, error == nil else {
                 completed(.failure(error!))
