@@ -2,39 +2,30 @@
 //  LocationDetailView.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/16/23.
+//  Created by Sean Allen on 5/20/21.
 //
-
-import Foundation
-
-import SwiftUI
 
 import SwiftUI
 
 struct LocationDetailView: View {
     
-    let columns = [GridItem(.flexible()), 
+    let columns = [GridItem(.flexible()),
                    GridItem(.flexible()),
                    GridItem(.flexible())]
     
+    var location: DDGLocation
+    
     var body: some View {
-     
         VStack(spacing: 16) {
-            Image("default-banner-asset")
-                .resizable()
-                .scaledToFill()
-                .frame(height: 120)
+            BannerImageView(image: location.createBannerImage())
             
             HStack {
-                Label("123 Main Street", systemImage: "mappin.and.ellipse")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
+                AddressView(address: location.address)
                 Spacer()
             }
             .padding(.horizontal)
             
-            DiscriptionView()
+            DescriptionView(text: location.description)
             
             ZStack {
                 Capsule()
@@ -48,7 +39,7 @@ struct LocationDetailView: View {
                         LocationActionButton(color: .brandPrimary, imageName: "location.fill")
                     }
                     
-                    Link(destination: URL(string: "https://www.apple.com")!, label: {
+                    Link(destination: URL(string: location.websiteURL)!, label: {
                         LocationActionButton(color: .brandPrimary, imageName: "network")
                     })
                     
@@ -69,6 +60,7 @@ struct LocationDetailView: View {
             Text("Who's Here?")
                 .bold()
                 .font(.title2)
+            
             ScrollView {
                 LazyVGrid(columns: columns, content: {
                     FirstNameAvatarView(firstName: "Sean")
@@ -82,8 +74,16 @@ struct LocationDetailView: View {
             }
             Spacer()
         }
-        .navigationTitle("Location Name")
+        .navigationTitle(location.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct LocationDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            LocationDetailView(location: DDGLocation(record: MockData.location))
+        }
     }
 }
 
@@ -108,6 +108,7 @@ struct LocationActionButton: View {
     }
 }
 
+
 struct FirstNameAvatarView: View {
     
     var firstName: String
@@ -124,20 +125,38 @@ struct FirstNameAvatarView: View {
     }
 }
 
-struct DiscriptionView: View {
+struct BannerImageView: View {
+    
+    var image: UIImage
+    
     var body: some View {
-        Text("This is a test description. This is a test description. This is a test description. This is a test description. This is a test description.")
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFill()
+            .frame(height: 120)
+    }
+}
+
+struct AddressView: View {
+    
+    var address: String
+    
+    var body: some View {
+        Label(address, systemImage: "mappin.and.ellipse")
+            .font(.caption)
+            .foregroundColor(.secondary)
+    }
+}
+
+struct DescriptionView: View {
+    
+    var text: String
+    
+    var body: some View {
+        Text(text)
             .lineLimit(3)
             .minimumScaleFactor(0.75)
             .frame(height: 70)
             .padding(.horizontal)
     }
 }
-
-
-struct LocationDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        LocationDetailView()
-    }
-}
-

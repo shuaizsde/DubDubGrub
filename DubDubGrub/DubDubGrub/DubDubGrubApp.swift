@@ -2,16 +2,19 @@
 //  DubDubGrubApp.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/15/23.
+//  Created by Sean Allen on 5/19/21.
 //
 
 import SwiftUI
 
 @main
 struct DubDubGrubApp: App {
+    
+    let locationManager = LocationManager()
+    
     var body: some Scene {
         WindowGroup {
-            AppTabView()
+            AppTabView().environmentObject(locationManager)
         }
     }
 }

@@ -2,17 +2,18 @@
 //  ProfileView.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/15/23.
+//  Created by Sean Allen on 5/19/21.
 //
 
 import SwiftUI
 
 struct ProfileView: View {
     
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var companyName = ""
-    @State private var bio = ""
+    @State private var firstName    = ""
+    @State private var lastName     = ""
+    @State private var companyName  = ""
+    @State private var bio          = ""
+        
     
     var body: some View {
         VStack {
@@ -22,56 +23,47 @@ struct ProfileView: View {
                 HStack(spacing: 16) {
                     ZStack {
                         AvatarView(size: 84)
-                        EditImageView()
+                        EditImage()
                     }
-                    VStack {
-                        TextField("First Name", text: $firstName).profileNameStyle()
-                        TextField("Last Name", text: $lastName).profileNameStyle()
+                    .padding(.leading, 12)
+                    
+                    VStack(spacing: 1) {
+                        TextField("First Name", text: $firstName)
+                            .profileNameStyle()
+                        
+                        TextField("Last Name", text: $lastName)
+                            .profileNameStyle()
+                        
                         TextField("Company Name", text: $companyName)
                     }
-                }.padding()
+                    .padding(.trailing, 16)
+                    
+                }
+                .padding()
             }
             
-            VStack(spacing: 6) {
+            VStack(alignment: .leading, spacing: 8) {
                 CharactersRemainView(currentCount: bio.count)
                 
-                TextEditor(text: $bio) 
+                TextEditor(text: $bio)
                     .frame(height: 100)
-                    .padding()
                     .overlay(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.secondary, lineWidth:1))
+                                .stroke(Color.secondary, lineWidth: 1))
             }
+            .padding(.horizontal, 20)
+            
             Spacer()
             
             Button {
                 
             } label: {
-                DDGButtton(title: "Create Profile")
+                DDGButton(title: "Create Profile")
             }
         }
-        .padding()
         .navigationTitle("Profile")
     }
 }
 
-struct NameBackgroundView: View {
-    var body: some View {
-        Color(.secondarySystemBackground)
-            .frame(height: 130)
-            .cornerRadius(12)
-    }
-}
-
-struct EditImageView: View {
-    var body: some View {
-        Image(systemName: "square.and.pencil")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 14, height: 14)
-            .foregroundColor(.white)
-            .offset(y:30)
-    }
-}
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
@@ -82,7 +74,28 @@ struct ProfileView_Previews: PreviewProvider {
 }
 
 
+struct NameBackgroundView: View {
+    var body: some View {
+        Color(.secondarySystemBackground)
+            .frame(height: 130)
+            .cornerRadius(12)
+            .padding(.horizontal)
+    }
+}
+
+struct EditImage: View {
+    var body: some View {
+        Image(systemName: "square.and.pencil")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 14, height: 14)
+            .foregroundColor(.white)
+            .offset(y: 30)
+    }
+}
+
 struct CharactersRemainView: View {
+    
     var currentCount: Int
     
     var body: some View {
@@ -90,25 +103,13 @@ struct CharactersRemainView: View {
             .font(.callout)
             .foregroundColor(.secondary)
         +
-        Text("\(100 - currentCount)")
+            Text("\(100 - currentCount)")
             .bold()
             .font(.callout)
-            .foregroundColor( currentCount <= 100 ? .brandPrimary : Color(.systemPink) )
+            .foregroundColor(currentCount <= 100 ? .brandPrimary : Color(.systemPink))
         +
         Text(" Characters Remain")
             .font(.callout)
             .foregroundColor(.secondary)
-    }
-}
-
-struct DDGButtton: View {
-    let title: String
-    var body: some View {
-        Text(title)
-            .bold()
-            .frame(width: 200, height: 44)
-            .background(Color.brandPrimary)
-            .foregroundColor(.white)
-            .cornerRadius(8)
     }
 }

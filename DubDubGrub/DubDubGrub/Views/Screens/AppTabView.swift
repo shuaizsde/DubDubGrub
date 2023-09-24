@@ -1,27 +1,29 @@
 //
-//  DDGTabView.swift
+//  AppTabView.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/15/23.
+//  Created by Sean Allen on 5/19/21.
 //
 
 import SwiftUI
 
 struct AppTabView: View {
-    
     var body: some View {
         TabView {
             LocationMapView()
                 .tabItem {
                     Label("Map", systemImage: "map")
                 }
+            
             LocationListView()
                 .tabItem {
                     Label("Locations", systemImage: "building")
                 }
+            
             NavigationView {
                 ProfileView()
-            } .tabItem {
+            }
+            .tabItem {
                 Label("Profile", systemImage: "person")
             }
         }

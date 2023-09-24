@@ -2,28 +2,28 @@
 //  LocationListView.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/15/23.
+//  Created by Sean Allen on 5/19/21.
 //
-
 
 import SwiftUI
 
 struct LocationListView: View {
+    
+    @EnvironmentObject private var locationManager: LocationManager
+    
     var body: some View {
         NavigationView {
             List {
-                ForEach(0..<10) { item in
-                    NavigationLink(destination: LocationDetailView()) {
-                        LocationCell()
+                ForEach(locationManager.locations) { location in
+                    NavigationLink(destination: LocationDetailView(location: location)) {
+                        LocationCell(location: location)
                     }
                 }
             }
-            .listStyle(.plain)
             .navigationTitle("Grub Spots")
         }
     }
 }
-
 
 struct LocationListView_Previews: PreviewProvider {
     static var previews: some View {

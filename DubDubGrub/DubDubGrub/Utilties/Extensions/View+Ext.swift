@@ -2,10 +2,9 @@
 //  View+Ext.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/16/23.
+//  Created by Sean Allen on 5/21/21.
 //
 
-import Foundation
 import SwiftUI
 
 extension View {
@@ -13,4 +12,3 @@ extension View {
         self.modifier(ProfileNameText())
     }
 }
- 
