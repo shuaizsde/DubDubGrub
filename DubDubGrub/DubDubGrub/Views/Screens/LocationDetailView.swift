@@ -115,7 +115,7 @@ struct FirstNameAvatarView: View {
     
     var body: some View {
         VStack {
-            AvatarView(size: 64)
+            AvatarView(size: 64, image: PlaceholderImage.avatar)
             
             Text(firstName)
                 .bold()
