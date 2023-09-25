@@ -17,7 +17,7 @@ struct DDGLocation: Identifiable {
     static let kLocation    = "location"
     static let kWebsiteURL  = "websiteURL"
     static let kPhoneNumber = "phoneNumber"
-    
+
     let id: CKRecord.ID
     let name: String
     let description: String
@@ -27,7 +27,7 @@ struct DDGLocation: Identifiable {
     let location: CLLocation
     let websiteURL: String
     let phoneNumber: String
-    
+
     init(record: CKRecord) {
         id          = record.recordID
         name        = record[DDGLocation.kName] as? String ?? "N/A"
@@ -39,12 +39,12 @@ struct DDGLocation: Identifiable {
         websiteURL  = record[DDGLocation.kWebsiteURL] as? String ?? "N/A"
         phoneNumber = record[DDGLocation.kPhoneNumber] as? String ?? "N/A"
     }
-    
+
     func createSquareImage() -> UIImage {
         guard let asset = squareAsset else { return PlaceholderImage.square }
         return asset.convertToUIImage(in: .square)
     }
-    
+
     func createBannerImage() -> UIImage {
         guard let asset = bannerAsset else { return PlaceholderImage.banner }
         return asset.convertToUIImage(in: .banner)

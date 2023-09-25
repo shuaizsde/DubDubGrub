@@ -11,15 +11,15 @@ struct AppTabView: View {
     var body: some View {
         TabView {
             LocationMapView()
-                .tabItem {
-                    Label("Map", systemImage: "map")
-                }
-            
+            .tabItem {
+                Label("Map", systemImage: "map")
+            }
+
             LocationListView()
-                .tabItem {
-                    Label("Locations", systemImage: "building")
-                }
-            
+            .tabItem {
+                Label("Locations", systemImage: "building")
+            }
+
             NavigationView {
                 ProfileView()
             }
@@ -28,14 +28,12 @@ struct AppTabView: View {
             }
         }
         .accentColor(.brandPrimary)
-        .onAppear{
-            
+        .onAppear {
             CloudKitManager.shared.getUserRecord()
-
             let appearance = UITabBarAppearance()
             appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
             appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.03)
-            
+
             // Use this appearance when scrolling behind the TabView:
             UITabBar.appearance().standardAppearance = appearance
             // Use this appearance when scrolled all the way up:

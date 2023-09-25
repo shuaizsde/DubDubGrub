@@ -8,21 +8,22 @@
 import CloudKit
 
 final class CloudKitManager {
-    
+
     static let shared = CloudKitManager()
-    
+
     private init() {}
-    
+
     var userRecord: CKRecord?
     var profileRecordID: CKRecord.ID?
-    
+
+    // Get current iCloud user
     func getUserRecord() {
         CKContainer.default().fetchUserRecordID { recordID, error in
             guard let recordID = recordID, error == nil else {
                 print(error!.localizedDescription)
                 return
             }
-            
+
             // Get UserRecord from public database
             CKContainer.default().publicCloudDatabase.fetch(withRecordID: recordID) { userRecord, error in
                 guard let userRecord = userRecord, error == nil else {
@@ -36,44 +37,46 @@ final class CloudKitManager {
             }
         }
     }
-    
+
+    // Get all locations
     func getLocations(completed: @escaping (Result<[DDGLocation], Error>) -> Void) {
         let sortDescriptor = NSSortDescriptor(key: DDGLocation.kName, ascending: true)
         let query = CKQuery(recordType: RecordType.location, predicate: NSPredicate(value: true))
         query.sortDescriptors = [sortDescriptor]
-        
+
         CKContainer.default().publicCloudDatabase.perform(query, inZoneWith: nil) { records, error in
             guard error == nil else {
                 completed(.failure(error!))
                 return
             }
-            
+
             guard let records = records else { return }
-            
+
             let locations = records.map { $0.convertToDDGLocation() }
             completed(.success(locations))
         }
     }
-    
+
+    // Fetch all users where user.isCheckedIn == given location id
     func getCheckedInProfiles(for locationID: CKRecord.ID, completed: @escaping (Result<[DDGProfile], Error>) -> Void) {
         let reference = CKRecord.Reference(recordID: locationID, action: .none)
         let predicate = NSPredicate(format: "isCheckedIn == %@", reference)
-        
+
         let query = CKQuery(recordType: RecordType.profile, predicate: predicate)
         CKContainer.default().publicCloudDatabase.perform(query, inZoneWith: nil) { records, error in
             guard let records = records, error == nil else {
                 completed(.failure(error!))
                 return
             }
-            
+
             let profiles = records.map { $0.convertToDDGProfile() }
             completed(.success(profiles))
 
         }
     }
-    
-    
-    //MARK: Save a bunch of records changes into database
+
+    // MARK: Fetch or save records
+    // Save a bunch of records changes into database
     func batchSave(records: [CKRecord], completed: @escaping (Result<[CKRecord], Error>) -> Void) {
         // Create a CKOpearation to save User and Profile Records
         let operation = CKModifyRecordsOperation(recordsToSave: records)
@@ -87,7 +90,8 @@ final class CloudKitManager {
         // Run the operation
         CKContainer.default().publicCloudDatabase.add(operation)
     }
-    
+
+    // Save one record changes into database
     func save(record: CKRecord, completed: @escaping (Result<CKRecord, Error>) -> Void) {
         CKContainer.default().publicCloudDatabase.save(record) { record, error in
             guard let record = record, error == nil else {
@@ -97,8 +101,8 @@ final class CloudKitManager {
             completed(.success(record))
         }
     }
-    
-    //MARK: Fetch a record by id
+
+    // Fetch any iCloud record by id
     func fetchRecord(with id: CKRecord.ID, completed: @escaping (Result<CKRecord, Error>) -> Void) {
         CKContainer.default().publicCloudDatabase.fetch(withRecordID: id) {record, error in
             guard let record = record, error == nil else {
@@ -108,6 +112,5 @@ final class CloudKitManager {
             completed(.success(record))
         }
     }
-    
-    
+
 }

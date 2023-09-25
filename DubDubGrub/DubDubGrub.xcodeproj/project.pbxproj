@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,7 +30,7 @@
 		EDC582E1265E853A00160DFF /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E0265E853A00160DFF /* CloudKitManager.swift */; };
 		EDC582E3265E864500160DFF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E2265E864500160DFF /* Constants.swift */; };
 		EDC582E5265E8A6800160DFF /* CKRecord+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E4265E8A6800160DFF /* CKRecord+Ext.swift */; };
-		EDC582E7265E8BCE00160DFF /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E6265E8BCE00160DFF /* AlertItem.swift */; };
+		EDC582E7265E8BCE00160DFF /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E6265E8BCE00160DFF /* Alerts.swift */; };
 		EDC582EA265E905500160DFF /* LocationMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E9265E905500160DFF /* LocationMapViewModel.swift */; };
 		EDFA5A4A26557C0C007DBD8A /* DubDubGrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */; };
 		EDFA5A4E26557C0C007DBD8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFA5A4D26557C0C007DBD8A /* Assets.xcassets */; };
@@ -67,7 +67,7 @@
 		EDC582E0265E853A00160DFF /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		EDC582E2265E864500160DFF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EDC582E4265E8A6800160DFF /* CKRecord+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Ext.swift"; sourceTree = "<group>"; };
-		EDC582E6265E8BCE00160DFF /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
+		EDC582E6265E8BCE00160DFF /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		EDC582E9265E905500160DFF /* LocationMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMapViewModel.swift; sourceTree = "<group>"; };
 		EDFA5A4626557C0C007DBD8A /* DubDubGrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DubDubGrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubDubGrubApp.swift; sourceTree = "<group>"; };
@@ -115,11 +115,27 @@
 		1CAA38742AC100CC0052526A /* LocationDetailView */ = {
 			isa = PBXGroup;
 			children = (
-				ED732D4C2656B9A7001D7FC0 /* LocationDetailView.swift */,
 				1CAA38752AC100E60052526A /* LocationDetailViewModel.swift */,
+				ED732D4C2656B9A7001D7FC0 /* LocationDetailView.swift */,
 				1CAA38772AC1137F0052526A /* ProfileModalView.swift */,
 			);
 			path = LocationDetailView;
+			sourceTree = "<group>";
+		};
+		1CCA23272AC1DBFD00013981 /* LocationListView */ = {
+			isa = PBXGroup;
+			children = (
+				EDFA5A622655807E007DBD8A /* LocationListView.swift */,
+			);
+			path = LocationListView;
+			sourceTree = "<group>";
+		};
+		1CCA23282AC1DC1600013981 /* OnboardView */ = {
+			isa = PBXGroup;
+			children = (
+				ED65312426651E22006B665D /* OnboardView.swift */,
+			);
+			path = OnboardView;
 			sourceTree = "<group>";
 		};
 		ED064E4F26627F6A007D2920 /* Managers */ = {
@@ -143,26 +159,25 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		ED18DC2D2657F87100ABD6AE /* Views */ = {
+		ED18DC2D2657F87100ABD6AE /* View Elements */ = {
 			isa = PBXGroup;
 			children = (
 				ED18DC262657F5FB00ABD6AE /* CustomModifiers.swift */,
 				ED18DC302657F8B200ABD6AE /* CustomViews */,
 				ED18DC2F2657F8A200ABD6AE /* Cells */,
-				ED18DC2E2657F87C00ABD6AE /* Screens */,
 			);
-			path = Views;
+			path = "View Elements";
 			sourceTree = "<group>";
 		};
 		ED18DC2E2657F87C00ABD6AE /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				EDFA5A5E2655800B007DBD8A /* AppTabView.swift */,
+				EDC582E8265E903700160DFF /* LocationMapView */,
+				1CCA23272AC1DBFD00013981 /* LocationListView */,
 				1CAA38742AC100CC0052526A /* LocationDetailView */,
 				1CAA386F2AC0B4DF0052526A /* ProfileView */,
-				EDC582E8265E903700160DFF /* LocationMapView */,
-				EDFA5A5E2655800B007DBD8A /* AppTabView.swift */,
-				EDFA5A622655807E007DBD8A /* LocationListView.swift */,
-				ED65312426651E22006B665D /* OnboardView.swift */,
+				1CCA23282AC1DC1600013981 /* OnboardView */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -212,7 +227,7 @@
 				ED064E4F26627F6A007D2920 /* Managers */,
 				ED18DC2C2657F85900ABD6AE /* Extensions */,
 				EDC582E2265E864500160DFF /* Constants.swift */,
-				EDC582E6265E8BCE00160DFF /* AlertItem.swift */,
+				EDC582E6265E8BCE00160DFF /* Alerts.swift */,
 			);
 			path = Utilties;
 			sourceTree = "<group>";
@@ -248,7 +263,8 @@
 			children = (
 				EDC582DF265E84CF00160DFF /* Utilties */,
 				ED471ECD265D35C9003A6D66 /* Model */,
-				ED18DC2D2657F87100ABD6AE /* Views */,
+				ED18DC2D2657F87100ABD6AE /* View Elements */,
+				ED18DC2E2657F87C00ABD6AE /* Screens */,
 				EDFA5A5826557CA2007DBD8A /* DubDubGrub.entitlements */,
 				EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */,
 				EDFA5A4D26557C0C007DBD8A /* Assets.xcassets */,
@@ -284,6 +300,7 @@
 				EDFA5A4226557C0C007DBD8A /* Sources */,
 				EDFA5A4326557C0C007DBD8A /* Frameworks */,
 				EDFA5A4426557C0C007DBD8A /* Resources */,
+				1CCA23262AC1CFB900013981 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -339,6 +356,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1CCA23262AC1CFB900013981 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EDFA5A4226557C0C007DBD8A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -362,7 +400,7 @@
 				EDC582E1265E853A00160DFF /* CloudKitManager.swift in Sources */,
 				ED65312726651E70006B665D /* LogoView.swift in Sources */,
 				ED65312A26652494006B665D /* XDismissButton.swift in Sources */,
-				EDC582E7265E8BCE00160DFF /* AlertItem.swift in Sources */,
+				EDC582E7265E8BCE00160DFF /* Alerts.swift in Sources */,
 				ED18DC292657F62800ABD6AE /* View+Ext.swift in Sources */,
 				ED18DC232657F32300ABD6AE /* LocationCell.swift in Sources */,
 				1CAA38782AC1137F0052526A /* ProfileModalView.swift in Sources */,

@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct ProfileModalView: View {
-    
+
     @Binding var isShowingProfileModalView: Bool
-    
+
     var profile: DDGProfile
-    
+
     var body: some View {
         ZStack {
             VStack {
-                Spacer().frame(height: 60)
+                Spacer()
+                    .frame(height: 60)
                 Text(profile.firstName + " " + profile.lastName)
                     .bold()
                     .font(.title2)
@@ -31,23 +32,23 @@ struct ProfileModalView: View {
                     .lineLimit(3)
                     .padding()
             }
-            .frame(width: 300, height: 230)
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(16)
-            .overlay(
-                Button {
-                    withAnimation{ isShowingProfileModalView = false }
-                } label: {
-                    XDismissButton()
-                },
-                alignment: .topTrailing
-            )
+                .frame(width: 300, height: 230)
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(16)
+                .overlay(
+                    Button {
+                        withAnimation { isShowingProfileModalView = false }
+                    } label: {
+                        XDismissButton()
+                    },
+                    alignment: .topTrailing
+                )
             Image(uiImage: profile.createAvatarImage())
                 .resizable()
                 .scaledToFill()
                 .frame(width: 110, height: 110)
                 .clipShape(Circle())
-                .shadow(color: .black.opacity(0.5),radius: 4, x: 0, y: 6)
+                .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 6)
                 .offset(y: -120)
         }
     }
