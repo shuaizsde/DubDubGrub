@@ -19,112 +19,20 @@ struct LocationDetailView: View {
                 BannerImageView(
                     image: viewModel.location.createBannerImage()
                 )
-                HStack {
-                    AddressView(address: viewModel.location.address)
-                    Spacer()
-                }
-                    .padding(.horizontal)
 
+                AddressView(address: viewModel.location.address)
+                    .padding(.horizontal)
                 DescriptionView(text: viewModel.location.description)
-
-                ZStack {
-                    Capsule()
-                        .frame(height: 80)
-                        .foregroundColor(Color(.secondarySystemBackground))
-
-                    HStack(spacing: 20) {
-                        Button {
-                            viewModel.getDirectionsToLocation()
-                        } label: {
-                            LocationActionButton(
-                                color: .brandPrimary,
-                                imageName: "location.fill"
-                            )
-                        }
-
-                        Link(destination: URL(string: viewModel.location.websiteURL)!,
-                             label: {
-                                LocationActionButton(
-                                    color: .brandPrimary,
-                                    imageName: "network"
-                                )
-                            }
-                        )
-
-                        Button {
-                            viewModel.callLocation()
-                        } label: {
-                            LocationActionButton(
-                                color: .brandPrimary,
-                                imageName: "phone.fill"
-                            )
-                        }
-
-                        if CloudKitManager.shared.profileRecordID != nil {
-                            Button {
-                                viewModel.updateCheckInStatus(
-                                    to: viewModel.isCheckedIn ? .checkedOut : .checkedIn
-                                )
-                            } label: {
-                                LocationActionButton(
-                                    color: viewModel.isCheckedIn ? .grubRed : .brandPrimary,
-                                    imageName: viewModel.isCheckedIn ? "person.fill.xmark" : "person.fill.checkmark"
-                                )
-                            }
-                        }
-                    }
-                }
-                    .padding(.horizontal)
-
-                Text("Who's Here?")
-                    .bold()
-                    .font(.title2)
-
-                ZStack {
-                    if viewModel.checkedInProfiles.isEmpty {
-                        Text("Nobody is here😅")
-                            .bold()
-                            .font(.title2)
-                            .foregroundColor(.secondary)
-                            .padding(.top, 30)
-                    } else {
-                        ScrollView {
-                            LazyVGrid(columns: viewModel.columns) {
-                                ForEach(viewModel.checkedInProfiles) { profile in
-                                    FirstNameAvatarView(profile: profile)
-                                        .onTapGesture {
-                                            withAnimation { viewModel.isShowingProfileModal = true }
-                                        }
-                                }
-                            }
-                        }
-                    }
-                    if viewModel.isLoading {LoadingView()}
-                }
+                ButtonStack(viewModel: viewModel)
+                WhoIsHereView()
+                CheckedInProfilesView(viewModel: viewModel)
 
                 Spacer()
             }
 
             if viewModel.isShowingProfileModal {
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-                    .opacity(0.9)
-                    // .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.35)))
-                    .transition(.opacity)
-                    .animation(.easeOut)
-                    .zIndex(1)
-                    .onTapGesture {
-                        withAnimation { viewModel.isShowingProfileModal = false }
-                    }
-                ProfileModalView(
-                    isShowingProfileModalView: $viewModel.isShowingProfileModal,
-                    profile: DDGProfile(record: MockData.profile)
-                )
-                .transition(.opacity.combined(with: .scale))
-                   .animation(.linear(duration: 0.5))
-                   .zIndex(2)
+                ProfileCard(viewModel: viewModel)
             }
-
         }
             .onAppear {
                 viewModel.getCheckedInProfiles()
@@ -140,14 +48,6 @@ struct LocationDetailView: View {
             }
             .navigationTitle(viewModel.location.name)
             .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct LocationDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            LocationDetailView(viewModel: LocationDetailViewModel(location: DDGLocation(record: MockData.location)))
-        }
     }
 }
 
@@ -206,9 +106,12 @@ struct AddressView: View {
     var address: String
 
     var body: some View {
-        Label(address, systemImage: "mappin.and.ellipse")
-            .font(.caption)
-            .foregroundColor(.secondary)
+        HStack {
+            Label(address, systemImage: "mappin.and.ellipse")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Spacer()
+        }
     }
 }
 
@@ -222,5 +125,122 @@ struct DescriptionView: View {
             .minimumScaleFactor(0.75)
             .frame(height: 70)
             .padding(.horizontal)
+    }
+}
+
+struct ButtonStack: View {
+    @ObservedObject var viewModel: LocationDetailViewModel
+    var body: some View {
+        ZStack {
+            Capsule()
+                .frame(height: 80)
+                .foregroundColor(Color(.secondarySystemBackground))
+
+            HStack(spacing: 20) {
+                Button {
+                    viewModel.getDirectionsToLocation()
+                } label: {
+                    LocationActionButton(
+                        color: .brandPrimary,
+                        imageName: "location.fill"
+                    )
+                }
+
+                Link(destination: URL(string: viewModel.location.websiteURL)!,
+                     label: {
+                    LocationActionButton(
+                        color: .brandPrimary,
+                        imageName: "network"
+                    )
+                }
+                )
+
+                Button {
+                    viewModel.callLocation()
+                } label: {
+                    LocationActionButton(
+                        color: .brandPrimary,
+                        imageName: "phone.fill"
+                    )
+                }
+
+                if CloudKitManager.shared.profileRecordID != nil {
+                    Button {
+                        viewModel.updateCheckInStatus(
+                            to: viewModel.isCheckedIn ? .checkedOut : .checkedIn
+                        )
+                    } label: {
+                        LocationActionButton(
+                            color: viewModel.isCheckedIn ? .grubRed : .brandPrimary,
+                            imageName: viewModel.isCheckedIn ? "person.fill.xmark" : "person.fill.checkmark"
+                        )
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+}
+
+struct CheckedInProfilesView: View {
+    @ObservedObject var viewModel: LocationDetailViewModel
+    var body: some View {
+        ZStack {
+            if viewModel.checkedInProfiles.isEmpty {
+                Text("Nobody is here😅")
+                    .bold()
+                    .font(.title2)
+                    .foregroundColor(.secondary)
+                    .padding(.top, 30)
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: viewModel.columns) {
+                        ForEach(viewModel.checkedInProfiles) { profile in
+                            FirstNameAvatarView(profile: profile)
+                                .onTapGesture {
+                                    withAnimation { viewModel.isShowingProfileModal = true }
+                                }
+                        }
+                    }
+                }
+            }
+            if viewModel.isLoading {LoadingView()}
+        }
+    }
+}
+
+struct WhoIsHereView: View {
+    var body: some View {
+        Text("Who's Here?").bold().font(.title2)
+    }
+}
+
+struct ProfileCard: View {
+    @ObservedObject var viewModel: LocationDetailViewModel
+    var body: some View {
+        Color(.systemBackground)
+            .ignoresSafeArea()
+            .opacity(0.9)
+            .transition(.opacity)
+            .animation(.easeOut)
+            .zIndex(1)
+            .onTapGesture {
+                withAnimation { viewModel.isShowingProfileModal = false }
+            }
+        ProfileModalView(
+            isShowingProfileModalView: $viewModel.isShowingProfileModal,
+            profile: DDGProfile(record: MockData.profile)
+        )
+            .transition(.opacity.combined(with: .scale))
+            .animation(.linear(duration: 0.5))
+            .zIndex(2)
+    }
+}
+
+struct LocationDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            LocationDetailView(viewModel: LocationDetailViewModel(location: DDGLocation(record: MockData.location)))
+        }
     }
 }

@@ -12,14 +12,15 @@ import CloudKit
 enum CheckInStatus {case checkedIn, checkedOut}
 
 final class LocationDetailViewModel: NSObject, ObservableObject {
+
     @Published var isLoading = false
-    @Published var checkedInProfiles: [DDGProfile] = []
+    @Published var isCheckedIn = false
     @Published var isShowingProfileModal = false
+
+    @Published var checkedInProfiles: [DDGProfile] = []
     @Published var alertItem: AlertItem?
 
-    var isCheckedIn: Bool = false
     var location: DDGLocation
-
     let columns = [GridItem(.flexible()),
                    GridItem(.flexible()),
                    GridItem(.flexible())]
@@ -52,7 +53,6 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
         guard let profileRecordID = CloudKitManager.shared.profileRecordID else { return }
         CloudKitManager.shared.fetchRecord(with: profileRecordID) { [self] result in
             DispatchQueue.main.async {
-
                 switch result {
                 case .success(let record):
                     if let reference = record[DDGProfile.kIsCheckedIn] as? CKRecord.Reference {
@@ -70,6 +70,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
     func updateCheckInStatus(to checkedInStatus: CheckInStatus) {
         // Retrieve the DDGProfile
         guard let profileRecordID = CloudKitManager.shared.profileRecordID else {
+            alertItem = AlertContext.unableToGetProfile
             return
         }
 
@@ -94,16 +95,14 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                             case .checkedOut:
                                 checkedInProfiles.removeAll(where: {$0.id == profile.id})
                             }
-                        isCheckedIn = checkedInStatus == .checkedIn
-                            print("✅checked in/out successfully")
+                            isCheckedIn = checkedInStatus == .checkedIn
                         case .failure:
-                            print("❌Error saving Record")
+                            alertItem = AlertContext.updateProfileFailure
                         }
                     }
                 }
             case .failure:
-                print("❌Error Fetching record")
-
+                alertItem = AlertContext.unableToGetCheckInOrOut
             }
         }
         // Create a reference to the location
@@ -119,7 +118,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                 case .success(let profiles):
                     self.checkedInProfiles = profiles
                 case .failure:
-                    print("error fetching checkedin profiles")
+                    self.alertItem = AlertContext.unableToGetCheckedInProfiles
                 }
                 self.hideLoadingView()
             }

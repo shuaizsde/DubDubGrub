@@ -167,4 +167,39 @@ struct AlertContext {
         ),
         dismissButton: .default(Text("Ok"))
     )
+    static let unableToGetCheckedInStatus = AlertItem(
+        title: Text(
+            "Server Error"
+        ),
+        message: Text(
+            """
+            Unable to retrieve checked in status of the current user
+            please contact technical support or try again.
+            """
+        ),
+        dismissButton: .default(Text("Ok"))
+    )
+    static let unableToGetCheckInOrOut = AlertItem(
+        title: Text(
+            "Server Error"
+        ),
+        message: Text(
+            """
+            Unable to check in or out
+            """
+        ),
+        dismissButton: .default(Text("Ok"))
+    )
+    static let unableToGetCheckedInProfiles = AlertItem(
+        title: Text(
+            "Server Error"
+        ),
+        message: Text(
+            """
+            We are unable to check in/out at this time \n
+            please try again
+            """
+        ),
+        dismissButton: .default(Text("Ok"))
+    )
 }

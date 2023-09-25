@@ -20,6 +20,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var isShowingPhotoPicker = false
     @Published var alertItem: AlertItem?
 
+    @Published var isCheckedIn  = false
     @Published var isLoading = false
 
     var existingProfileRecord: CKRecord? {
@@ -136,6 +137,50 @@ final class ProfileViewModel: ObservableObject {
         profileRecord[DDGProfile.kAvatar]       = avatar.convertToCKAsset()
 
         return profileRecord
+    }
+
+    func getCheckedInStatus() {
+        guard let profileRecordID = CloudKitManager.shared.profileRecordID else { return }
+        CloudKitManager.shared.fetchRecord(with: profileRecordID) { [self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let record):
+                    if record[DDGProfile.kIsCheckedIn] as? CKRecord.Reference != nil {
+                        self.isCheckedIn = true
+                    } else {
+                        self.isCheckedIn = false
+                    }
+                case .failure:
+                    break
+                }
+            }
+        }
+    }
+
+    func checkOut() {
+        guard let profileRecordID = CloudKitManager.shared.profileRecordID else {
+            alertItem = AlertContext.unableToGetProfile
+            return
+        }
+
+        CloudKitManager.shared.fetchRecord(with: profileRecordID) { result in
+            switch result {
+            case .success(let record):
+                record[DDGProfile.kIsCheckedIn] = nil
+                CloudKitManager.shared.save(record: record) { [self] result in
+                    DispatchQueue.main.async { [self] in
+                        switch result {
+                        case .success:
+                            isCheckedIn = false
+                        case .failure:
+                            alertItem = AlertContext.unableToGetCheckInOrOut
+                        }
+                    }
+                }
+            case .failure:
+                DispatchQueue.main.async {self.alertItem = AlertContext.unableToGetCheckInOrOut }
+            }
+        }
     }
 
     private func showLoadingView() { isLoading = true }
