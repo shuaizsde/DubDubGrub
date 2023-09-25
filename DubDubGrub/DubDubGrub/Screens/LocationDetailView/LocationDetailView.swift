@@ -78,8 +78,7 @@ struct FirstNameAvatarView: View {
     var body: some View {
         VStack {
             AvatarView(
-                size: 64,
-                image: profile.createAvatarImage()
+                image: profile.createAvatarImage(), size: 64
             )
             Text(profile.firstName)
                 .bold()

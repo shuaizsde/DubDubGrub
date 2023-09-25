@@ -13,6 +13,7 @@
 		1CAA38732AC0D8D50052526A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAA38722AC0D8D50052526A /* LoadingView.swift */; };
 		1CAA38762AC100E60052526A /* LocationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAA38752AC100E60052526A /* LocationDetailViewModel.swift */; };
 		1CAA38782AC1137F0052526A /* ProfileModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAA38772AC1137F0052526A /* ProfileModalView.swift */; };
+		1CCA232A2AC21D6B00013981 /* LocationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCA23292AC21D6B00013981 /* LocationListViewModel.swift */; };
 		ED064E5126627F99007D2920 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED064E5026627F99007D2920 /* LocationManager.swift */; };
 		ED064E53266288D9007D2920 /* CKAsset+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED064E52266288D9007D2920 /* CKAsset+Ext.swift */; };
 		ED18DC232657F32300ABD6AE /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18DC222657F32300ABD6AE /* LocationCell.swift */; };
@@ -50,6 +51,7 @@
 		1CAA38722AC0D8D50052526A /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		1CAA38752AC100E60052526A /* LocationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailViewModel.swift; sourceTree = "<group>"; };
 		1CAA38772AC1137F0052526A /* ProfileModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModalView.swift; sourceTree = "<group>"; };
+		1CCA23292AC21D6B00013981 /* LocationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListViewModel.swift; sourceTree = "<group>"; };
 		ED064E5026627F99007D2920 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		ED064E52266288D9007D2920 /* CKAsset+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKAsset+Ext.swift"; sourceTree = "<group>"; };
 		ED18DC222657F32300ABD6AE /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
@@ -125,7 +127,9 @@
 		1CCA23272AC1DBFD00013981 /* LocationListView */ = {
 			isa = PBXGroup;
 			children = (
+				ED18DC2F2657F8A200ABD6AE /* Cells */,
 				EDFA5A622655807E007DBD8A /* LocationListView.swift */,
+				1CCA23292AC21D6B00013981 /* LocationListViewModel.swift */,
 			);
 			path = LocationListView;
 			sourceTree = "<group>";
@@ -164,7 +168,6 @@
 			children = (
 				ED18DC262657F5FB00ABD6AE /* CustomModifiers.swift */,
 				ED18DC302657F8B200ABD6AE /* CustomViews */,
-				ED18DC2F2657F8A200ABD6AE /* Cells */,
 			);
 			path = "View Elements";
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				ED18DC232657F32300ABD6AE /* LocationCell.swift in Sources */,
 				1CAA38782AC1137F0052526A /* ProfileModalView.swift in Sources */,
 				EDC582E5265E8A6800160DFF /* CKRecord+Ext.swift in Sources */,
+				1CCA232A2AC21D6B00013981 /* LocationListViewModel.swift in Sources */,
 				ED064E5126627F99007D2920 /* LocationManager.swift in Sources */,
 				ED064E53266288D9007D2920 /* CKAsset+Ext.swift in Sources */,
 				ED65312526651E22006B665D /* OnboardView.swift in Sources */,

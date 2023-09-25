@@ -20,7 +20,7 @@ struct ProfileView: View {
 
                     HStack(spacing: 16) {
                         ZStack {
-                            AvatarView(size: 84, image: viewModel.avatar)
+                            AvatarView(image: viewModel.avatar, size: 84)
                             EditImage()
                         }
                         .padding(.leading, 12)
