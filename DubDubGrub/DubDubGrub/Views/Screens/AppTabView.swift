@@ -21,7 +21,7 @@ struct AppTabView: View {
                 }
             
             NavigationView {
-                ProfileView(viewModel: ProfileViewModel())
+                ProfileView()
             }
             .tabItem {
                 Label("Profile", systemImage: "person")

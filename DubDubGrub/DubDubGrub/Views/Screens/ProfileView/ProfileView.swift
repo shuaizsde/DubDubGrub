@@ -10,7 +10,7 @@ import CloudKit
 
 struct ProfileView: View {
     
-    @StateObject var viewModel: ProfileViewModel
+    @StateObject var viewModel = ProfileViewModel()
     
     var body: some View {
         ZStack {
@@ -55,9 +55,9 @@ struct ProfileView: View {
                 Spacer()
                 
                 Button {
-                    viewModel.createProfile()
+                    viewModel.profileContext == .create ? viewModel.createProfile() : viewModel.updateProfile()
                 } label: {
-                    DDGButton(title: "Create Profile")
+                    DDGButton(title: viewModel.profileContext == .create ? "Create Profile" : "Update Profile")
                 }
                 .padding(.bottom)
             }

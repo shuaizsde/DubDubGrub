@@ -54,5 +54,18 @@ struct AlertContext {
     static let unableToGetProfile   = AlertItem(title: Text("Unable To Retrieve Profile"),
                                                 message: Text("We were unable to retrieve your profile at this time. Please check your internet connection and try again later or contact customer support if this persists."),
                                                 dismissButton: .default(Text("Ok")))
+    
+    static let updateProfileSuccess = AlertItem(title: Text("Profile Updated Successfully"),
+                                                message: Text("Your profile has successfully been updated."),
+                                                dismissButton: .default(Text("Ok")))
+    
+    static let updateProfileFailure = AlertItem(title: Text("Failed to Updated Profile"),
+                                                message: Text("Your profile has successfully been created."),
+                                                dismissButton: .default(Text("Ok")))
+    
+    //MARK: - LocationDetailView Errors
+    static let invalidPhoneNumber = AlertItem(title: Text("Invalid Phone Number"),
+                                              message: Text("The phone number for the location is invalid, please look up the phone number again."),
+                                              dismissButton: .default(Text("Ok")))
 }
 
