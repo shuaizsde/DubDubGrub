@@ -28,7 +28,21 @@ struct AppTabView: View {
             }
         }
         .accentColor(.brandPrimary)
-        .onAppear{CloudKitManager.shared.getUserRecord()} // will only call once
+        .onAppear{
+            
+            CloudKitManager.shared.getUserRecord()
+
+            let appearance = UITabBarAppearance()
+            appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+            appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.03)
+            
+            // Use this appearance when scrolling behind the TabView:
+            UITabBar.appearance().standardAppearance = appearance
+            // Use this appearance when scrolled all the way up:
+            if #available(iOS 15.0, *) {
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+        }
     }
 }
 
