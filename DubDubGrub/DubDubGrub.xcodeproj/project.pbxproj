@@ -34,7 +34,7 @@
 		EDC582E1265E853A00160DFF /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E0265E853A00160DFF /* CloudKitManager.swift */; };
 		EDC582E3265E864500160DFF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E2265E864500160DFF /* Constants.swift */; };
 		EDC582E5265E8A6800160DFF /* CKRecord+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E4265E8A6800160DFF /* CKRecord+Ext.swift */; };
-		EDC582E7265E8BCE00160DFF /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E6265E8BCE00160DFF /* Alerts.swift */; };
+		EDC582E7265E8BCE00160DFF /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E6265E8BCE00160DFF /* AlertItem.swift */; };
 		EDC582EA265E905500160DFF /* LocationMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC582E9265E905500160DFF /* LocationMapViewModel.swift */; };
 		EDFA5A4A26557C0C007DBD8A /* DubDubGrubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */; };
 		EDFA5A4E26557C0C007DBD8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFA5A4D26557C0C007DBD8A /* Assets.xcassets */; };
@@ -75,7 +75,7 @@
 		EDC582E0265E853A00160DFF /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		EDC582E2265E864500160DFF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EDC582E4265E8A6800160DFF /* CKRecord+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+Ext.swift"; sourceTree = "<group>"; };
-		EDC582E6265E8BCE00160DFF /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
+		EDC582E6265E8BCE00160DFF /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
 		EDC582E9265E905500160DFF /* LocationMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMapViewModel.swift; sourceTree = "<group>"; };
 		EDFA5A4626557C0C007DBD8A /* DubDubGrub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DubDubGrub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubDubGrubApp.swift; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 				ED064E4F26627F6A007D2920 /* Managers */,
 				ED18DC2C2657F85900ABD6AE /* Extensions */,
 				EDC582E2265E864500160DFF /* Constants.swift */,
-				EDC582E6265E8BCE00160DFF /* Alerts.swift */,
+				EDC582E6265E8BCE00160DFF /* AlertItem.swift */,
 			);
 			path = Utilties;
 			sourceTree = "<group>";
@@ -393,7 +393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\n# navigate to the directory containing .swiftlint.yml\ncd \"${SRCROOT}/${PROJECT_NAME}\"\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -421,7 +421,7 @@
 				EDC582E1265E853A00160DFF /* CloudKitManager.swift in Sources */,
 				ED65312726651E70006B665D /* LogoView.swift in Sources */,
 				ED65312A26652494006B665D /* XDismissButton.swift in Sources */,
-				EDC582E7265E8BCE00160DFF /* Alerts.swift in Sources */,
+				EDC582E7265E8BCE00160DFF /* AlertItem.swift in Sources */,
 				ED18DC292657F62800ABD6AE /* View+Ext.swift in Sources */,
 				ED18DC232657F32300ABD6AE /* LocationCell.swift in Sources */,
 				1CAA38782AC1137F0052526A /* ProfileModalView.swift in Sources */,

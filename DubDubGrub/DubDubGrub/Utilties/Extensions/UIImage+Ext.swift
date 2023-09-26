@@ -18,7 +18,7 @@ extension UIImage {
         }
 
         // append unique id for profile image
-        let fileUrl  = urlPath.appendingPathComponent("selectedAvatarImage")
+        let fileUrl = urlPath.appendingPathComponent("selectedAvatarImage")
 
         // write image data to location the address points to
         guard let imageData = jpegData(compressionQuality: 0.25) else {return nil}
@@ -30,6 +30,5 @@ extension UIImage {
         } catch {
             return nil
         }
-
     }
 }

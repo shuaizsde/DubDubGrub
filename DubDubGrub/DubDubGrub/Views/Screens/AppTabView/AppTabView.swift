@@ -2,7 +2,7 @@
 //  AppTabView.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/19/21.
+//  Created by Simon Zhang on 5/19/23.
 //
 
 import SwiftUI
@@ -15,10 +15,10 @@ struct AppTabView: View {
         TabView {
             LocationMapView()
                 .tabItem { Label("Map", systemImage: "map") }
-            
+
             LocationListView()
                 .tabItem { Label("Locations", systemImage: "building") }
-            
+
             NavigationView { ProfileView() }
                 .tabItem { Label("Profile", systemImage: "person") }
         }
@@ -33,7 +33,7 @@ struct AppTabView: View {
                 onDismiss: viewModel.checkIfLocationServicesIsEnabled
             ) { OnboardView() }
     }
-    
+
     func tabBarIOS15Fix() {
         let appearance = UITabBarAppearance()
         appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)

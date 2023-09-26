@@ -2,7 +2,7 @@
 //  View+Ext.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/21/21.
+//  Created by Simon Zhang on 9/21/23.
 //
 
 import SwiftUI
@@ -20,7 +20,7 @@ extension View {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }
-    
+
 //    func embedInScrollView() -> some View {
 //        GeometryReader { geometry in
 //            ScrollView {

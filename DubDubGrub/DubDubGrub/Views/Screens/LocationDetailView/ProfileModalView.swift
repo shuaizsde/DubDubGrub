@@ -14,23 +14,25 @@ struct ProfileModalView: View {
     var profile: DDGProfile
 
     var body: some View {
-        
+
         ZStack {
             VStack {
                 Spacer().frame(height: 60)
-                
+
                 Text(profile.firstName + " " + profile.lastName)
                     .bold()
                     .font(.title2)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
-                
+					.padding(.horizontal)
+
                 Text(profile.companyName)
                     .fontWeight(.semibold)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
+					.padding(.horizontal)
                     .foregroundColor(.secondary)
-                
+
                 Text(profile.bio)
                     .lineLimit(3)
                     .padding()
@@ -47,7 +49,7 @@ struct ProfileModalView: View {
                     alignment: .topTrailing
                 )
 
-            Image(uiImage: profile.avatarImage())
+            Image(uiImage: profile.avatarImage)
                 .resizable()
                 .scaledToFill()
                 .frame(width: 110, height: 110)

@@ -2,11 +2,11 @@
 //  ProfileView.swift
 //  DubDubGrub
 //
-//  Created by Simon Zhang on 5/19/21.
+//  Created by Simon Zhang on 5/19/23.
 //
 
-import SwiftUI
 import CloudKit
+import SwiftUI
 
 struct ProfileView: View {
 
@@ -37,7 +37,6 @@ struct ProfileView: View {
                             TextField("Company Name", text: $viewModel.companyName)
                         }
                         .padding(.trailing, 16)
-
                     }
                     .padding()
                 }
@@ -94,7 +93,7 @@ struct ProfileView: View {
             viewModel.getProfile()
             viewModel.getCheckedInStatus()
         }
-        .alert(item: $viewModel.alertItem, content: {$0.alert})
+        .alert(item: $viewModel.alertItem, content: { $0.alert })
         .sheet(isPresented: $viewModel.isShowingPhotoPicker) {
             PhotoPicker(image: $viewModel.avatar)
         }

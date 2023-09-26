@@ -2,7 +2,7 @@
 //  AppTabViewModel.swift
 //  DubDubGrub
 //
-//  Created by Shuai Zhang on 9/25/23.
+//  Created by Shuai Zhang on 9/23/23.
 //
 import CoreLocation
 import SwiftUI
@@ -28,12 +28,14 @@ final class AppTabViewModel: NSObject, ObservableObject {
     }
 
     func checkIfLocationServicesIsEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
-            deviceLocationManager = CLLocationManager()
-            deviceLocationManager!.delegate = self
-        } else {
-            alertItem = AlertContext.locationDisabled
-        }
+		Task {
+			if CLLocationManager.locationServicesEnabled() {
+				deviceLocationManager = CLLocationManager()
+				deviceLocationManager!.delegate = self
+			} else {
+				alertItem = AlertContext.locationDisabled
+			}
+		}
     }
 
     // HELPER:  CLLocationManagerDelegate completionHandler

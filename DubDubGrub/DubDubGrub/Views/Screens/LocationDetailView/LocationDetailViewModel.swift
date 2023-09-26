@@ -5,14 +5,14 @@
 //  Created by Shuai Zhang on 9/24/23.
 //
 
+import CloudKit
 import MapKit
 import SwiftUI
-import CloudKit
 
 enum CheckInStatus {case checkedIn, checkedOut}
 
 final class LocationDetailViewModel: NSObject, ObservableObject {
-    
+
     @Published var checkedInProfiles: [DDGProfile] = []
     @Published var isLoading = false
     @Published var isCheckedIn = false
@@ -21,10 +21,12 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
     @Published var alertItem: AlertItem?
 
     var location: DDGLocation
-    
-    let columns = [GridItem(.flexible()),
-                   GridItem(.flexible()),
-                   GridItem(.flexible())]
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
 
     init(location: DDGLocation) {
         self.location = location
@@ -44,21 +46,22 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
         guard let url = URL(string: "tel://\(location.phoneNumber)") else {
             alertItem = AlertContext.invalidPhoneNumber
             return
-
         }
         UIApplication.shared.open(url)
     }
 
     func getCheckedInStatus() {
-        guard let profileRecordID = CloudKitManager.shared.profileRecordID else { return }
+        guard let profileRecordID = CloudKitManager.shared.profileRecordID else {
+            return
+        }
         CloudKitManager.shared.fetchRecord(with: profileRecordID) { [self] result in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success(let record):
                     if let reference = record[DDGProfile.kIsCheckedIn] as? CKRecord.Reference {
-                        self.isCheckedIn = reference.recordID == self.location.id
+                        isCheckedIn = reference.recordID == self.location.id
                     } else {
-                        self.isCheckedIn = false
+                        isCheckedIn = false
                     }
                 case .failure:
                     alertItem = AlertContext.unableToGetCheckInStatus
@@ -73,7 +76,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
             alertItem = AlertContext.unableToGetProfile
             return
         }
-
+		showLoadingView()
         CloudKitManager.shared.fetchRecord(with: profileRecordID) { [self] result in
             switch result {
             case .success(let record):
@@ -88,6 +91,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
 
                 CloudKitManager.shared.save(record: record) { [self] result in
                     DispatchQueue.main.async { [self] in
+						hideLoadingView()
                         switch result {
                         case .success(let record):
                             let profile = DDGProfile(record: record)
@@ -95,7 +99,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                             case .checkedIn:
                                 checkedInProfiles.append(profile)
                             case .checkedOut:
-                                checkedInProfiles.removeAll(where: {$0.id == profile.id})
+                                checkedInProfiles.removeAll(where: { $0.id == profile.id })
                             }
                             isCheckedIn = checkedInStatus == .checkedIn
                         case .failure:
@@ -104,6 +108,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                     }
                 }
             case .failure:
+				hideLoadingView()
                 alertItem = AlertContext.unableToCheckInOrOut
             }
         }

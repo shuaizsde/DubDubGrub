@@ -5,8 +5,8 @@
 //  Created by Shuai Zhang on 9/24/23.
 //
 
-import Foundation
 import CloudKit
+import Foundation
 
 enum ProfileContext {case create, update}
 
@@ -20,7 +20,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var isShowingPhotoPicker = false
     @Published var isCheckedIn  = false
     @Published var isLoading = false
-    
+
     @Published var alertItem: AlertItem?
 
     var existingProfileRecord: CKRecord? {
@@ -36,12 +36,14 @@ final class ProfileViewModel: ObservableObject {
               !companyName.isEmpty,
               avatar != PlaceholderImage.avatar,
               bio.count <= 100 else {return false}
-        
+
         return true
     }
-    
+
     func getCheckedInStatus() {
-        guard let profileRecordID = CloudKitManager.shared.profileRecordID else { return }
+        guard let profileRecordID = CloudKitManager.shared.profileRecordID else {
+            return
+        }
         CloudKitManager.shared.fetchRecord(with: profileRecordID) { [self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -57,7 +59,7 @@ final class ProfileViewModel: ObservableObject {
             }
         }
     }
-    
+
     func createProfile() {
         guard isValidProfile() else {
             alertItem = AlertContext.invalidProfile
@@ -88,7 +90,6 @@ final class ProfileViewModel: ObservableObject {
                 }
             }
         }
-
     }
 
     func getProfile() {
@@ -112,7 +113,7 @@ final class ProfileViewModel: ObservableObject {
                     lastName        = profile.lastName
                     bio             = profile.bio
                     companyName     = profile.companyName
-                    avatar          = profile.avatarImage()
+                    avatar          = profile.avatarImage
                 case .failure:
                     alertItem = AlertContext.unableToGetProfile
                 }
@@ -169,7 +170,7 @@ final class ProfileViewModel: ObservableObject {
                     }
                 }
             case .failure:
-                DispatchQueue.main.async {self.alertItem = AlertContext.unableToCheckInOrOut }
+                DispatchQueue.main.async { self.alertItem = AlertContext.unableToCheckInOrOut }
             }
         }
     }
@@ -184,7 +185,7 @@ final class ProfileViewModel: ObservableObject {
 
         return profileRecord
     }
-    
+
     private func showLoadingView() { isLoading = true }
 
     private func hideLoadingView() { isLoading = false }

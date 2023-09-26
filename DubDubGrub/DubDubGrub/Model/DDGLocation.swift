@@ -2,7 +2,7 @@
 //  DDGLocation.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/25/21.
+//  Created by Simon Zhang on 9/23/23.
 //
 
 import CloudKit
@@ -21,8 +21,8 @@ struct DDGLocation: Identifiable {
     let id: CKRecord.ID
     let name: String
     let description: String
-    let squareAsset: CKAsset!
-    let bannerAsset: CKAsset!
+    let squareAsset: CKAsset?
+    let bannerAsset: CKAsset?
     let address: String
     let location: CLLocation
     let websiteURL: String
@@ -40,12 +40,12 @@ struct DDGLocation: Identifiable {
         phoneNumber = record[DDGLocation.kPhoneNumber] as? String ?? "N/A"
     }
 
-    func squareImage() -> UIImage {
+	var squareImage: UIImage {
         guard let asset = squareAsset else { return PlaceholderImage.square }
         return asset.convertToUIImage(in: .square)
     }
 
-    func bannerImage() -> UIImage {
+	var bannerImage: UIImage {
         guard let asset = bannerAsset else { return PlaceholderImage.banner }
         return asset.convertToUIImage(in: .banner)
     }

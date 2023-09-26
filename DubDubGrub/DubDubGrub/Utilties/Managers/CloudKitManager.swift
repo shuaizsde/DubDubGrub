@@ -2,7 +2,7 @@
 //  CloudKitManager.swift
 //  DubDubGrub
 //
-//  Created by Simon Zhang on 5/26/21.
+//  Created by Simon Zhang on 9/26/23.
 //
 
 import CloudKit
@@ -10,7 +10,7 @@ import CloudKit
 final class CloudKitManager {
 
     static let shared = CloudKitManager()
-    
+
     var userRecord: CKRecord?
     var profileRecordID: CKRecord.ID?
 
@@ -71,7 +71,6 @@ final class CloudKitManager {
 
             let profiles = records.map { $0.convertToDDGProfile() }
             completed(.success(profiles))
-
         }
     }
 
@@ -98,7 +97,7 @@ final class CloudKitManager {
 
         CKContainer.default().publicCloudDatabase.add(operation)
     }
-    
+
     func getCheckedInProfilesCount(completed: @escaping (Result<[CKRecord.ID: Int], Error>) -> Void) {
         let predicate = NSPredicate(format: "isCheckedInNilCheck == 1")
         let query = CKQuery(recordType: RecordType.profile, predicate: predicate)
@@ -112,7 +111,6 @@ final class CloudKitManager {
             guard let locationReference = record[DDGProfile.kIsCheckedIn] as? CKRecord.Reference else {return}
             let count = checkedInProfiles[locationReference.recordID] ?? 0
             checkedInProfiles[locationReference.recordID] = count + 1
-
         }
 
         operation.queryCompletionBlock = { _, error in
@@ -125,7 +123,7 @@ final class CloudKitManager {
 
         CKContainer.default().publicCloudDatabase.add(operation)
     }
-    
+
     // MARK: Fetch or save records
     // Save a bunch of records changes into database
     func batchSave(records: [CKRecord], completed: @escaping (Result<[CKRecord], Error>) -> Void) {
@@ -163,6 +161,4 @@ final class CloudKitManager {
             completed(.success(record))
         }
     }
-
-
 }

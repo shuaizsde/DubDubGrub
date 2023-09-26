@@ -2,7 +2,7 @@
 //  DDGProfile.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/25/21.
+//  Created by Simon Zhang on 9/23/23.
 //
 
 import CloudKit
@@ -20,13 +20,13 @@ struct DDGProfile: Identifiable {
     let id: CKRecord.ID
     let firstName: String
     let lastName: String
-    let avatar: CKAsset!
+    let avatar: CKAsset?
     let companyName: String
     let bio: String
     let isCheckedIn: CKRecord.Reference?
 
     init(record: CKRecord) {
-        id  = record.recordID
+        id = record.recordID
         firstName   = record[DDGProfile.kFirstName] as? String ?? "N/A"
         lastName    = record[DDGProfile.kLastName] as? String ?? "N/A"
         avatar      = record[DDGProfile.kAvatar] as? CKAsset
@@ -35,7 +35,7 @@ struct DDGProfile: Identifiable {
         isCheckedIn = record[DDGProfile.kIsCheckedIn] as? CKRecord.Reference
     }
 
-    func avatarImage() -> UIImage {
+	var avatarImage: UIImage {
         guard let asset = avatar else { return PlaceholderImage.avatar }
         return asset.convertToUIImage(in: .square)
     }

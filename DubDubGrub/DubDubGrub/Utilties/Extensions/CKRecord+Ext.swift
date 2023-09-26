@@ -2,7 +2,7 @@
 //  CKRecord+Ext.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/26/21.
+//  Created by Simon Zhang on 9/26/23.
 //
 
 import CloudKit

@@ -2,7 +2,7 @@
 //  Color+Ext.swift
 //  DubDubGrub
 //
-//  Created by Sean Allen on 5/19/21.
+//  Created by Simon Zhang on 9/19/23.
 //
 
 import SwiftUI
