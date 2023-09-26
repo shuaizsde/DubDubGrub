@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AppTabView: View {
+    @StateObject var viewModel = AppTabViewModel()
+
     var body: some View {
         TabView {
             LocationMapView()
@@ -28,7 +30,14 @@ struct AppTabView: View {
             }
         }
         .accentColor(.brandPrimary)
+        .sheet(
+            isPresented: $viewModel.isShowingOnboardView,
+            onDismiss: viewModel.checkIfLocationServicesIsEnabled
+        ) {
+            OnboardView(isShowingOnboardView: $viewModel.isShowingOnboardView)
+        }
         .onAppear {
+            viewModel.runStartupChecks()
             CloudKitManager.shared.getUserRecord()
             let appearance = UITabBarAppearance()
             appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)

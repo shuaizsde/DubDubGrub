@@ -6,11 +6,14 @@
 //
 
 import MapKit
+import CloudKit
 
-final class LocationMapViewModel: NSObject, ObservableObject {
-    @Published var isShowingOnboardView = false
+final class LocationMapViewModel: ObservableObject {
+    @Published var isShowingDetailView = false
     @Published var alertItem: AlertItem?
+    @Published var checkedInProfiles: [CKRecord.ID: Int] = [:]
     @Published var region = MKCoordinateRegion(
+
         center:
             CLLocationCoordinate2D(
                 latitude: 37.331516,
@@ -22,32 +25,19 @@ final class LocationMapViewModel: NSObject, ObservableObject {
                 longitudeDelta: 0.01
             )
     )
-    var deviceLocationManager: CLLocationManager?
+    func getCheckedInCounts() {
+        CloudKitManager.shared.getCheckedInProfilesCount { result in
+            DispatchQueue.main.async {
+                switch result {
 
-    var hasSeenOnboardView: Bool {
-        return UserDefaults.standard.bool(forKey: kHasSeenOnboardView)
-    }
-    let kHasSeenOnboardView = "hasSeenOnboardView"
-
-    // MARK: OnAppear Checks
-    func runStartupChecks() {
-        if !hasSeenOnboardView {
-            isShowingOnboardView = true
-            UserDefaults.standard.set(true, forKey: kHasSeenOnboardView)
-        } else {
-            checkIfLocationServicesIsEnabled()
+                case .success(let checkedInProfiles):
+                    self.checkedInProfiles = checkedInProfiles
+                case .failure:
+                    break
+                }
+            }
         }
     }
-
-    func checkIfLocationServicesIsEnabled() {
-        if CLLocationManager.locationServicesEnabled() {
-            deviceLocationManager = CLLocationManager()
-            deviceLocationManager!.delegate = self
-        } else {
-            alertItem = AlertContext.locationDisabled
-        }
-    }
-
     func getLocations(for locationManager: LocationManager) {
         CloudKitManager.shared.getLocations { [self] result in
             DispatchQueue.main.async {
@@ -59,30 +49,5 @@ final class LocationMapViewModel: NSObject, ObservableObject {
                 }
             }
         }
-    }
-
-    // HELPER:  CLLocationManagerDelegate completionHandler
-    private func checkLocationAuthorization() {
-
-        guard let deviceLocationManager = deviceLocationManager else { return }
-
-        switch deviceLocationManager.authorizationStatus {
-        case .notDetermined:
-            deviceLocationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            alertItem = AlertContext.locationRestricted
-        case .denied:
-            alertItem = AlertContext.locationDenied
-        case .authorizedAlways, .authorizedWhenInUse:
-            break
-        @unknown default:
-            break
-        }
-    }
-}
-
-extension LocationMapViewModel: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationAuthorization()
     }
 }

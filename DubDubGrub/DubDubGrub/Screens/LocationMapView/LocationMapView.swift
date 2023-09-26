@@ -18,10 +18,20 @@ struct LocationMapView: View {
                 coordinateRegion: $viewModel.region,
                 showsUserLocation: true,
                 annotationItems: locationManager.locations) { location in
-                    MapMarker(
+                    MapAnnotation(
                         coordinate: location.location.coordinate,
-                        tint: .brandPrimary
-                    )
+                        anchorPoint: CGPoint(x: 0.5, y: 0.5)) {
+                            DDGAnnotation(
+                                location: location,
+                                number: viewModel.checkedInProfiles[location.id, default: 0]
+                            )
+                                .onTapGesture {
+                                    locationManager.selectedLocation = location
+                                    if locationManager.selectedLocation != nil {
+                                        viewModel.isShowingDetailView = true
+                                    }
+                                }
+                    }
                 }
                     .accentColor(.grubRed)
                     .ignoresSafeArea()
@@ -33,16 +43,26 @@ struct LocationMapView: View {
             }
         }
             .sheet(
-                isPresented: $viewModel.isShowingOnboardView,
-                onDismiss: viewModel.checkIfLocationServicesIsEnabled
+                isPresented: $viewModel.isShowingDetailView
             ) {
-                OnboardView(isShowingOnboardView: $viewModel.isShowingOnboardView)
+                NavigationView {
+                    LocationDetailView(viewModel:
+                        LocationDetailViewModel(location: locationManager.selectedLocation!)
+                    )
+                    .toolbar {
+                        Button {
+                            viewModel.isShowingDetailView = false
+                        } label: {
+                            Text("Dismiss").foregroundColor(Color.brandPrimary)
+                        }
+                    }
+                }
             }
             .alert(item: $viewModel.alertItem) { alertItem in
                 Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
             }
             .onAppear {
-                viewModel.runStartupChecks()
+                viewModel.getCheckedInCounts()
                 if locationManager.locations.isEmpty {
                     viewModel.getLocations(for: locationManager)
                 }
