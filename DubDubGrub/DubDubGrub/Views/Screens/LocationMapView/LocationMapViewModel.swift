@@ -9,11 +9,11 @@ import MapKit
 import CloudKit
 
 final class LocationMapViewModel: ObservableObject {
+
     @Published var isShowingDetailView = false
     @Published var alertItem: AlertItem?
     @Published var checkedInProfiles: [CKRecord.ID: Int] = [:]
     @Published var region = MKCoordinateRegion(
-
         center:
             CLLocationCoordinate2D(
                 latitude: 37.331516,
@@ -25,29 +25,38 @@ final class LocationMapViewModel: ObservableObject {
                 longitudeDelta: 0.01
             )
     )
+
     func getCheckedInCounts() {
         CloudKitManager.shared.getCheckedInProfilesCount { result in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 switch result {
-
                 case .success(let checkedInProfiles):
                     self.checkedInProfiles = checkedInProfiles
                 case .failure:
-                    break
+                    alertItem = AlertContext.checkedInCount
                 }
             }
         }
     }
+
     func getLocations(for locationManager: LocationManager) {
-        CloudKitManager.shared.getLocations { [self] result in
-            DispatchQueue.main.async {
+        CloudKitManager.shared.getLocations { result in
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success(let locations):
                     locationManager.locations = locations
                 case .failure:
-                self.alertItem = AlertContext.unableToGetLocations
+                    alertItem = AlertContext.unableToGetLocations
                 }
             }
         }
     }
+//
+//    @ViewBuilder func createLocationDetailView(for location: DDGLocation, in sizeCategory: ContentSizeCategory) -> some View {
+//        if sizeCategory >= .accessibilityMedium {
+//            LocationDetailView(viewModel: LocationDetailViewModel(location: location)).embedInScrollView()
+//        } else {
+//            LocationDetailView(viewModel: LocationDetailViewModel(location: location))
+//        }
+//    }
 }

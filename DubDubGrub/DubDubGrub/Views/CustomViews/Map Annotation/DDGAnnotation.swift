@@ -11,13 +11,14 @@ struct DDGAnnotation: View {
 
     var location: DDGLocation
     var number: Int
+    
     var body: some View {
         VStack {
             ZStack {
                 MapBalloon()
                     .frame(width: 100, height: 70)
                     .foregroundColor(Color.brandPrimary)
-                Image(uiImage: location.createSquareImage())
+                Image(uiImage: location.squareImage())
                     .resizable()
                     .scaledToFit()
                     .frame(width: 40, height: 40)

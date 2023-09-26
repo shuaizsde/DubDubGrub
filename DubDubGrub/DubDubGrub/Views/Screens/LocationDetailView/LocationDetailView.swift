@@ -8,23 +8,27 @@
 import SwiftUI
 
 struct LocationDetailView: View {
-    /** Note: @ObservedObject meaning the view model relies on previous view passed in
-     *  whereas @StateObject is creating the viewModel for the first time
-     */
+    
+    /// Note: @ObservedObject meaning the view model relies on previous view passed in
+    /// whereas @StateObject is creating the viewModel for the first time
     @ObservedObject var viewModel: LocationDetailViewModel
 
     var body: some View {
         ZStack {
+            
             VStack(spacing: 16) {
                 BannerImageView(
-                    image: viewModel.location.createBannerImage()
+                    image: viewModel.location.bannerImage()
                 )
 
-                AddressView(address: viewModel.location.address)
-                    .padding(.horizontal)
+                AddressView(address: viewModel.location.address).padding(.horizontal)
+                
                 DescriptionView(text: viewModel.location.description)
+                
                 ButtonStack(viewModel: viewModel)
+                
                 WhoIsHereView()
+                
                 CheckedInProfilesView(viewModel: viewModel)
 
                 Spacer()
@@ -38,14 +42,7 @@ struct LocationDetailView: View {
                 viewModel.getCheckedInProfiles()
                 viewModel.getCheckedInStatus()
             }
-            .alert(item: $viewModel.alertItem) { alertItem in
-                Alert(
-                    title: alertItem.title,
-                    message: alertItem.message,
-                    dismissButton: alertItem.dismissButton
-                )
-
-            }
+            .alert(item: $viewModel.alertItem, content: {$0.alert})
             .navigationTitle(viewModel.location.name)
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -78,7 +75,7 @@ struct FirstNameAvatarView: View {
     var body: some View {
         VStack {
             AvatarView(
-                image: profile.createAvatarImage(), size: 64
+                image: profile.avatarImage(), size: 64
             )
             Text(profile.firstName)
                 .bold()
@@ -128,7 +125,9 @@ struct DescriptionView: View {
 }
 
 struct ButtonStack: View {
+    
     @ObservedObject var viewModel: LocationDetailViewModel
+    
     var body: some View {
         ZStack {
             Capsule()
@@ -145,13 +144,9 @@ struct ButtonStack: View {
                     )
                 }
 
-                Link(destination: URL(string: viewModel.location.websiteURL)!,
-                     label: {
-                    LocationActionButton(
-                        color: .brandPrimary,
-                        imageName: "network"
-                    )
-                }
+                Link(
+                    destination: URL(string: viewModel.location.websiteURL)!,
+                    label: { LocationActionButton(color: .brandPrimary, imageName: "network") }
                 )
 
                 Button {
@@ -165,9 +160,8 @@ struct ButtonStack: View {
 
                 if CloudKitManager.shared.profileRecordID != nil {
                     Button {
-                        viewModel.updateCheckInStatus(
-                            to: viewModel.isCheckedIn ? .checkedOut : .checkedIn
-                        )
+                        viewModel.updateCheckInStatus(to: viewModel.isCheckedIn ? .checkedOut : .checkedIn)
+                        playHaptic()
                     } label: {
                         LocationActionButton(
                             color: viewModel.isCheckedIn ? .grubRed : .brandPrimary,
@@ -182,7 +176,9 @@ struct ButtonStack: View {
 }
 
 struct CheckedInProfilesView: View {
+    
     @ObservedObject var viewModel: LocationDetailViewModel
+    
     var body: some View {
         ZStack {
             if viewModel.checkedInProfiles.isEmpty {
@@ -209,14 +205,17 @@ struct CheckedInProfilesView: View {
 }
 
 struct WhoIsHereView: View {
+    
     var body: some View {
         Text("Who's Here?").bold().font(.title2)
     }
 }
 
 struct ProfileCard: View {
+    
     @ObservedObject var viewModel: LocationDetailViewModel
     var body: some View {
+        
         Color(.systemBackground)
             .ignoresSafeArea()
             .opacity(0.9)
@@ -226,6 +225,7 @@ struct ProfileCard: View {
             .onTapGesture {
                 withAnimation { viewModel.isShowingProfileModal = false }
             }
+        
         ProfileModalView(
             isShowingProfileModalView: $viewModel.isShowingProfileModal,
             profile: DDGProfile(record: MockData.profile)
@@ -237,6 +237,7 @@ struct ProfileCard: View {
 }
 
 struct LocationDetailView_Previews: PreviewProvider {
+    
     static var previews: some View {
         NavigationView {
             LocationDetailView(viewModel: LocationDetailViewModel(location: DDGLocation(record: MockData.location)))

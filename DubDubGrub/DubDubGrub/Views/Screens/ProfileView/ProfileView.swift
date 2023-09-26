@@ -49,6 +49,7 @@ struct ProfileView: View {
                         if viewModel.isCheckedIn {
                             Button {
                                 viewModel.checkOut()
+                                playHaptic()
                             } label: {
                                 Label("Check Out", systemImage: "mappin.and.ellipse")
                                     .font(.system(size: 12, weight: .semibold))
@@ -93,8 +94,7 @@ struct ProfileView: View {
             viewModel.getProfile()
             viewModel.getCheckedInStatus()
         }
-        .alert(item: $viewModel.alertItem, content: { alertItem in
-            Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)})
+        .alert(item: $viewModel.alertItem, content: {$0.alert})
         .sheet(isPresented: $viewModel.isShowingPhotoPicker) {
             PhotoPicker(image: $viewModel.avatar)
         }

@@ -12,15 +12,16 @@ import CloudKit
 enum CheckInStatus {case checkedIn, checkedOut}
 
 final class LocationDetailViewModel: NSObject, ObservableObject {
-
+    
+    @Published var checkedInProfiles: [DDGProfile] = []
     @Published var isLoading = false
     @Published var isCheckedIn = false
     @Published var isShowingProfileModal = false
 
-    @Published var checkedInProfiles: [DDGProfile] = []
     @Published var alertItem: AlertItem?
 
     var location: DDGLocation
+    
     let columns = [GridItem(.flexible()),
                    GridItem(.flexible()),
                    GridItem(.flexible())]
@@ -40,7 +41,6 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
     }
 
     func callLocation() {
-        /** guard let url = URL(string: "tel://832-366-1190") else {return} **/
         guard let url = URL(string: "tel://\(location.phoneNumber)") else {
             alertItem = AlertContext.invalidPhoneNumber
             return
@@ -61,7 +61,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                         self.isCheckedIn = false
                     }
                 case .failure:
-                    break
+                    alertItem = AlertContext.unableToGetCheckInStatus
                 }
             }
         }
@@ -104,28 +104,26 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
                     }
                 }
             case .failure:
-                alertItem = AlertContext.unableToGetCheckInOrOut
+                alertItem = AlertContext.unableToCheckInOrOut
             }
         }
-        // Create a reference to the location
-
-        // Save the updated profile to CloudKit
     }
 
     func getCheckedInProfiles() {
         showLoadingView()
-        CloudKitManager.shared.getCheckedInProfiles(for: location.id) { [self] result in
-            DispatchQueue.main.async {
+        CloudKitManager.shared.getCheckedInProfiles(for: location.id) { result in
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success(let profiles):
-                    self.checkedInProfiles = profiles
+                    checkedInProfiles = profiles
                 case .failure:
-                    self.alertItem = AlertContext.unableToGetCheckedInProfiles
+                    alertItem = AlertContext.unableToGetCheckedInProfiles
                 }
-                self.hideLoadingView()
+                hideLoadingView()
             }
         }
     }
+
     private func showLoadingView() { isLoading = true }
     private func hideLoadingView() { isLoading = false }
 }

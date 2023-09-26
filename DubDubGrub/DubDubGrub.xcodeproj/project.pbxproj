@@ -133,9 +133,9 @@
 		1CCA23272AC1DBFD00013981 /* LocationListView */ = {
 			isa = PBXGroup;
 			children = (
-				ED18DC2F2657F8A200ABD6AE /* Cells */,
-				EDFA5A622655807E007DBD8A /* LocationListView.swift */,
 				1CCA23292AC21D6B00013981 /* LocationListViewModel.swift */,
+				EDFA5A622655807E007DBD8A /* LocationListView.swift */,
+				ED18DC222657F32300ABD6AE /* LocationCell.swift */,
 			);
 			path = LocationListView;
 			sourceTree = "<group>";
@@ -187,13 +187,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		ED18DC2D2657F87100ABD6AE /* View Elements */ = {
+		ED18DC2D2657F87100ABD6AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				ED18DC262657F5FB00ABD6AE /* CustomModifiers.swift */,
+				ED18DC2E2657F87C00ABD6AE /* Screens */,
 				ED18DC302657F8B200ABD6AE /* CustomViews */,
 			);
-			path = "View Elements";
+			path = Views;
 			sourceTree = "<group>";
 		};
 		ED18DC2E2657F87C00ABD6AE /* Screens */ = {
@@ -209,22 +210,14 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		ED18DC2F2657F8A200ABD6AE /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				ED18DC222657F32300ABD6AE /* LocationCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		ED18DC302657F8B200ABD6AE /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
 				1CCA232D2AC2436A00013981 /* Map Annotation */,
-				1CAA38722AC0D8D50052526A /* LoadingView.swift */,
 				1C3B18102ABFF30F001A9678 /* UIKit Components */,
 				ED65312826652488006B665D /* Buttons */,
 				ED18DC242657F37800ABD6AE /* AvatarView.swift */,
+				1CAA38722AC0D8D50052526A /* LoadingView.swift */,
 				ED65312626651E70006B665D /* LogoView.swift */,
 			);
 			path = CustomViews;
@@ -291,8 +284,7 @@
 			children = (
 				EDC582DF265E84CF00160DFF /* Utilties */,
 				ED471ECD265D35C9003A6D66 /* Model */,
-				ED18DC2D2657F87100ABD6AE /* View Elements */,
-				ED18DC2E2657F87C00ABD6AE /* Screens */,
+				ED18DC2D2657F87100ABD6AE /* Views */,
 				EDFA5A5826557CA2007DBD8A /* DubDubGrub.entitlements */,
 				EDFA5A4926557C0C007DBD8A /* DubDubGrubApp.swift */,
 				EDFA5A4D26557C0C007DBD8A /* Assets.xcassets */,
