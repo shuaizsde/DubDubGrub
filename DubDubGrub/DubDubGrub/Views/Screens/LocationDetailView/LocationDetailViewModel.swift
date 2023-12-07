@@ -21,6 +21,7 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
     @Published var alertItem: AlertItem?
 
     var location: DDGLocation
+	var restaurant: DDGRestaurant?
 
     let columns = [
         GridItem(.flexible()),
@@ -128,6 +129,16 @@ final class LocationDetailViewModel: NSObject, ObservableObject {
             }
         }
     }
+
+	func getRestaurantDetail(name: String) {
+		Task {
+			guard let restaurant = await RestaurantManager.shared.getRestaurant(name: name) else { return }
+			self.restaurant = restaurant
+			print(restaurant.name)
+			print(restaurant.price)
+			print(restaurant.reviewCount)
+		}
+	}
 
     private func showLoadingView() { isLoading = true }
     private func hideLoadingView() { isLoading = false }
