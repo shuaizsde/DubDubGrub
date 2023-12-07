@@ -33,6 +33,7 @@ struct LocationDetailView: View {
             .onAppear {
                 viewModel.getCheckedInProfiles()
                 viewModel.getCheckedInStatus()
+				viewModel.getRestaurantDetail(name: "north-india-restaurant-san-francisco")
             }
             .alert(item: $viewModel.alertItem, content: { $0.alert })
             .navigationTitle(viewModel.location.name)
