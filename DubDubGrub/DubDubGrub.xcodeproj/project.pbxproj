@@ -115,13 +115,6 @@
 			path = "UIKit Components";
 			sourceTree = "<group>";
 		};
-		1C3D93422ACF14B900C96A01 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		1CAA386F2AC0B4DF0052526A /* ProfileView */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,7 +251,6 @@
 		EDC582DF265E84CF00160DFF /* Utilties */ = {
 			isa = PBXGroup;
 			children = (
-				1C3D93422ACF14B900C96A01 /* Services */,
 				ED064E4F26627F6A007D2920 /* Managers */,
 				ED18DC2C2657F85900ABD6AE /* Extensions */,
 				EDC582E2265E864500160DFF /* Constants.swift */,
